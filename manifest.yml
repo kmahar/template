@@ -32,7 +32,7 @@ variables:
               id: sqlite
               version: "4.0.0"
               is_sqlite: true
-          - name: Mongo
+          - name: Mongo (via MongoKitten)
             description: ""
             data:
               module: Mongo
@@ -40,6 +40,9 @@ variables:
               id: mongo
               version: "1.0.0"
               is_mongo: true
+  - name: mongoDB
+    description: Would you like to use MongoDB?
+    type: bool
   - name: leaf
     description: Would you like to use Leaf?
     type: bool
@@ -59,6 +62,10 @@ files:
             dynamic: true
           - folder: Models
             if: fluent
+            files:
+              - Todo.swift
+          - folder: Models
+            if: mongoDB
             files:
               - Todo.swift
           - folder: Migrations

@@ -12,5 +12,15 @@ func routes(_ app: Application) throws {
         return "Hello, world!"
     }{{#fluent}}
 
-    try app.register(collection: TodoController()){{/fluent}}
+    try app.register(collection: TodoController()){{/fluent}}{{#mongoDB}}
+    app.get("todos") { req -> EventLoopFuture<[Todo]> in
+        req.todoCollection.find().flatMap { cursor in
+            cursor.toArray()
+        }
+    }
+    
+    app.post("todos") { req -> EventLoopFuture<Response> in
+        let todo = try req.decode(Todo.self)
+    }
+    {{/mongoDB}}
 }

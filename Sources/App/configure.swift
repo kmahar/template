@@ -1,7 +1,8 @@
 {{#fluent}}import Fluent
 import Fluent{{fluent.db.module}}Driver
 {{/fluent}}{{#leaf}}import Leaf
-{{/leaf}}import Vapor
+{{/leaf}}{{#mongoDB}}import MongoDBVapor
+{{/mongoDB}}import Vapor
 
 // configures your application
 public func configure(_ app: Application) throws {
@@ -24,7 +25,12 @@ public func configure(_ app: Application) throws {
         connectionString: Environment.get("DATABASE_URL") ?? "mongodb://localhost:27017/vapor_database"
     ), as: .mongo){{/fluent.db.is_mongo}}{{#fluent.db.is_sqlite}}app.databases.use(.sqlite(.file("db.sqlite")), as: .sqlite){{/fluent.db.is_sqlite}}
 
-    app.migrations.add(CreateTodo()){{/fluent}}{{#leaf}}
+    app.migrations.add(CreateTodo()){{/fluent}}{{#mongoDB}}
+    try app.mongoDB.configure(Environment.get("DATABASE_URL") ?? "mongodb://localhost:27017")
+
+    // Use `ExtendedJSONEncoder` and `ExtendedJSONDecoder` for encoding/decoding `Content`.
+    ContentConfiguration.global.use(encoder: ExtendedJSONEncoder(), for: .json)
+    ContentConfiguration.global.use(decoder: ExtendedJSONDecoder(), for: .json){{/mongoDB}}{{#leaf}}
 
     app.views.use(.leaf)
 
