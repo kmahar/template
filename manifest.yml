@@ -64,10 +64,12 @@ files:
             if: fluent
             files:
               - Todo.swift
+                dynamic: true
           - folder: Models
             if: mongoDB
             files:
               - Todo.swift
+                dynamic: true
           - folder: Migrations
             if: fluent
             files:

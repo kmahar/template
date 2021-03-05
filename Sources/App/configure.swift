@@ -26,6 +26,7 @@ public func configure(_ app: Application) throws {
     ), as: .mongo){{/fluent.db.is_mongo}}{{#fluent.db.is_sqlite}}app.databases.use(.sqlite(.file("db.sqlite")), as: .sqlite){{/fluent.db.is_sqlite}}
 
     app.migrations.add(CreateTodo()){{/fluent}}{{#mongoDB}}
+
     try app.mongoDB.configure(Environment.get("DATABASE_URL") ?? "mongodb://localhost:27017")
 
     // Use `ExtendedJSONEncoder` and `ExtendedJSONDecoder` for encoding/decoding `Content`.

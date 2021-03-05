@@ -1,5 +1,6 @@
 {{#fluent}}import Fluent
-{{/fluent}}import Vapor
+{{/fluent}}{{mongoDB}}import MongoDBVapor
+{{/mongoDB}}import Vapor
 
 func routes(_ app: Application) throws {
     {{#leaf}}app.get { req in
@@ -20,7 +21,8 @@ func routes(_ app: Application) throws {
     }
     
     app.post("todos") { req -> EventLoopFuture<Response> in
-        let todo = try req.decode(Todo.self)
-    }
-    {{/mongoDB}}
+        let todo = try req.content.decode(Todo.self)
+        return req.todoCollection.insertOne(todo)
+            .map { _ in Response(status: .created) }
+    }{{/mongoDB}}
 }
