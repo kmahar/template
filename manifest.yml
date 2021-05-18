@@ -69,7 +69,7 @@ files:
             if: mongoDB
             files:
               - Todo.swift
-                - dynamic: true
+                dynamic: true
           - folder: Migrations
             if: fluent
             files:
