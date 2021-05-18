@@ -1,5 +1,5 @@
 {{#fluent}}import Fluent
-{{/fluent}}{{mongoDB}}import MongoDBVapor
+{{/fluent}}{{#mongoDB}}import MongoDBVapor
 {{/mongoDB}}import Vapor
 
 func routes(_ app: Application) throws {
